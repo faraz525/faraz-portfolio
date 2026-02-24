@@ -1,0 +1,54 @@
+---
+import { Image } from 'astro:assets'
+import headshot from '../../assets/images/headshot2.jpeg'
+---
+
+<section id="about" data-about class="section-full relative flex items-center justify-center px-6 py-24">
+  <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
+    <!-- Image -->
+    <div class="relative" data-about-image>
+      <div class="relative overflow-hidden rounded-2xl">
+        <Image
+          src={headshot}
+          alt="Faraz Qureshi"
+          class="h-auto w-full object-cover"
+          widths={[400, 600, 800]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+        <div class="absolute inset-0 rounded-2xl ring-1 ring-white/10" />
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="flex flex-col gap-6">
+      <h2
+        data-about-text
+        class="font-display text-3xl font-bold sm:text-4xl"
+      >
+        About Me
+      </h2>
+
+      <p data-about-text class="text-lg leading-relaxed text-text-secondary">
+        Software Engineer at Tesla, building high-performance data systems that process millions of events daily.
+        Previously shipped at Amazon AWS and Capital One, where I built monitoring tools and data pipelines
+        that saved thousands of developer hours.
+      </p>
+
+      <p data-about-text class="text-lg leading-relaxed text-text-secondary">
+        Outside of work, I build things. From Modern Stoic — a digital wellness brand — to Cledge,
+        a startup that won #1 at the Dempsey Competition and joined MassChallenge, I'm driven by the intersection
+        of engineering and entrepreneurship.
+      </p>
+
+      <div
+        data-about-badge
+        class="flex items-center gap-3 rounded-xl bg-bg-elevated px-5 py-3 ring-1 ring-white/5"
+      >
+        <div class="h-3 w-3 rounded-full bg-accent-violet" />
+        <span class="text-sm font-medium text-text-secondary">
+          B.S. Computer Science — University of Washington, 2024
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

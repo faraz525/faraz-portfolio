@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Nav from '../components/ui/Nav.astro'
+import ScrollProgress from '../components/ui/ScrollProgress.astro'
+import Hero from '../components/sections/Hero.astro'
+import About from '../components/sections/About.astro'
+import ImpactStats from '../components/sections/ImpactStats.astro'
+import ExperienceTimeline from '../components/sections/ExperienceTimeline.astro'
+import StartupsIntro from '../components/sections/StartupsIntro.astro'
+import StartupSlide from '../components/sections/StartupSlide.astro'
+import Skills from '../components/sections/Skills.astro'
+import Contact from '../components/sections/Contact.astro'
+import { startups } from '../data/startups'
+---
+
+<BaseLayout>
+  <Nav />
+  <ScrollProgress />
+
+  <main>
+    <Hero />
+    <About />
+    <ImpactStats />
+    <ExperienceTimeline />
+    <StartupsIntro />
+
+    <div id="startups">
+      {startups.map((startup) => (
+        <StartupSlide
+          name={startup.name}
+          role={startup.role}
+          date={startup.date}
+          description={startup.description}
+          highlights={startup.highlights}
+          techStack={startup.techStack}
+          animation={startup.animation}
+          accentColor={startup.accentColor}
+        />
+      ))}
+    </div>
+
+    <Skills />
+    <Contact />
+  </main>
+
+  <script>
+    import { initSmoothScroll } from '../scripts/lenis-init'
+    import { initHeroAnimations } from '../scripts/animations/hero'
+    import { initAboutAnimations } from '../scripts/animations/about'
+    import { initStatsAnimations } from '../scripts/animations/stats'
+    import { initExperienceAnimations } from '../scripts/animations/experience'
+    import { initStartupsIntroAnimation, initStartupSlideAnimations } from '../scripts/animations/startups'
+    import { initSkillsAnimations } from '../scripts/animations/skills'
+    import { initContactAnimations } from '../scripts/animations/contact'
+
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!prefersReducedMotion) {
+      initSmoothScroll()
+      initHeroAnimations()
+      initAboutAnimations()
+      initStatsAnimations()
+      initExperienceAnimations()
+      initStartupsIntroAnimation()
+      initStartupSlideAnimations()
+      initSkillsAnimations()
+      initContactAnimations()
+    }
+  </script>
+</BaseLayout>

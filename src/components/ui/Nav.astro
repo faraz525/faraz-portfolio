@@ -1,0 +1,61 @@
+---
+const sections = [
+  { id: 'hero', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'stats', label: 'Impact' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'startups', label: 'Startups' },
+  { id: 'skills', label: 'Skills' },
+  { id: 'contact', label: 'Contact' },
+]
+---
+
+<nav
+  data-nav
+  class="fixed right-4 top-1/2 z-50 -translate-y-1/2 hidden md:flex flex-col gap-3"
+>
+  {sections.map((section) => (
+    <a
+      href={`#${section.id}`}
+      data-nav-dot={section.id}
+      class="group relative flex items-center justify-end"
+      aria-label={section.label}
+    >
+      <span class="mr-3 text-xs font-medium text-text-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        {section.label}
+      </span>
+      <span class="block h-2.5 w-2.5 rounded-full border border-text-muted bg-transparent transition-all duration-300 group-hover:border-accent-violet group-hover:bg-accent-violet" />
+    </a>
+  ))}
+</nav>
+
+<script>
+  function initNav() {
+    const dots = document.querySelectorAll('[data-nav-dot]')
+    const sections = document.querySelectorAll('section[id]')
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id
+            dots.forEach((dot) => {
+              const circle = dot.querySelector('span:last-child')
+              if (!circle) return
+              if (dot.getAttribute('data-nav-dot') === id) {
+                circle.classList.add('bg-accent-violet', 'border-accent-violet', 'scale-125')
+              } else {
+                circle.classList.remove('bg-accent-violet', 'border-accent-violet', 'scale-125')
+              }
+            })
+          }
+        })
+      },
+      { rootMargin: '-40% 0px -40% 0px' }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+  }
+
+  document.addEventListener('DOMContentLoaded', initNav)
+</script>

@@ -1,0 +1,24 @@
+---
+import { stats } from '../../data/stats'
+import StatCounter from '../ui/StatCounter.astro'
+---
+
+<section
+  id="stats"
+  data-stats
+  class="section-full relative flex items-center justify-center overflow-hidden bg-bg"
+>
+  <div class="relative h-screen w-full px-6">
+    {stats.map((stat, i) => (
+      <StatCounter
+        prefix={stat.prefix}
+        value={stat.numericValue}
+        suffix={stat.suffix}
+        label={stat.label}
+        sublabel={stat.sublabel}
+        gradient={[stat.gradient[0], stat.gradient[1]]}
+        hidden={i !== 0}
+      />
+    ))}
+  </div>
+</section>

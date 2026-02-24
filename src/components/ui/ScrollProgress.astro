@@ -1,0 +1,26 @@
+---
+---
+
+<div
+  data-scroll-progress
+  class="fixed top-0 left-0 z-50 h-[2px] w-0 bg-gradient-to-r from-accent-violet via-accent-purple to-accent-cyan"
+/>
+
+<script>
+  function initScrollProgress() {
+    const bar = document.querySelector('[data-scroll-progress]') as HTMLElement
+    if (!bar) return
+
+    function updateProgress() {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0
+      bar.style.width = `${progress}%`
+    }
+
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    updateProgress()
+  }
+
+  document.addEventListener('DOMContentLoaded', initScrollProgress)
+</script>
