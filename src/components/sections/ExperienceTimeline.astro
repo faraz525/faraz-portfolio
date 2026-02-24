@@ -1,0 +1,87 @@
+---
+import { experiences } from '../../data/experience'
+import ExperienceSlide from './ExperienceSlide.astro'
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '../../assets/images/*.{jpeg,jpg,png,gif,webp}',
+  { eager: true }
+)
+
+function getImage(filename: string): ImageMetadata {
+  const path = `../../assets/images/${filename}`
+  const img = images[path]
+  if (!img) {
+    throw new Error(`Image not found: ${path}`)
+  }
+  return img.default
+}
+---
+
+<section id="experience" data-experience class="relative bg-bg">
+  <!-- Section header -->
+  <div class="flex items-center justify-center pt-24 pb-8 px-6">
+    <h2 class="font-display text-3xl font-bold sm:text-4xl md:text-5xl">
+      Where I've <span class="gradient-text">Worked</span>
+    </h2>
+  </div>
+
+  <!-- Desktop: horizontal scroll track -->
+  <div class="hidden md:block overflow-hidden">
+    <div
+      data-experience-track
+      class="flex items-center gap-8 px-[20vw]"
+      style="height: 70vh;"
+    >
+      {experiences.map((exp) => (
+        <ExperienceSlide
+          company={exp.company}
+          role={exp.role}
+          date={exp.date}
+          bullets={exp.bullets}
+          techStack={exp.techStack}
+          logoSrc={getImage(exp.logo)}
+        />
+      ))}
+    </div>
+  </div>
+
+  <!-- Mobile: vertical stack -->
+  <div class="flex flex-col gap-8 px-6 pb-24 md:hidden">
+    {experiences.map((exp) => (
+      <div data-experience-slide class="rounded-2xl bg-bg-elevated p-6 ring-1 ring-white/5">
+        <div class="flex items-center gap-3">
+          <div class="h-10 w-10 overflow-hidden rounded-lg bg-white/5 p-1.5 flex items-center justify-center">
+            <img
+              src={getImage(exp.logo).src}
+              alt={`${exp.company} logo`}
+              class="h-full w-full object-contain"
+              width="40"
+              height="40"
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <h3 class="font-display text-lg font-bold">{exp.company}</h3>
+            <p class="text-xs text-text-secondary">{exp.role}</p>
+          </div>
+        </div>
+        <p class="mt-1.5 text-xs text-text-muted">{exp.date}</p>
+        <ul class="mt-4 space-y-2">
+          {exp.bullets.map((bullet) => (
+            <li class="flex gap-2 text-sm leading-relaxed text-text-secondary">
+              <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent-violet" />
+              <span>{bullet}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          {exp.techStack.map((tech) => (
+            <span class="rounded-full bg-accent-violet/10 px-2.5 py-0.5 text-xs font-medium text-accent-purple">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

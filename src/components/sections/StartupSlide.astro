@@ -1,0 +1,66 @@
+---
+interface Props {
+  name: string
+  role: string
+  date: string
+  description: string
+  highlights: readonly string[]
+  techStack: readonly string[]
+  animation: string
+  accentColor: string
+}
+
+const { name, role, date, description, highlights, techStack, animation, accentColor } = Astro.props
+---
+
+<section
+  data-startup-slide
+  data-startup-animation={animation}
+  class="section-full relative flex items-center justify-center overflow-hidden px-6"
+>
+  <!-- Animated background -->
+  <div
+    data-startup-bg
+    class="absolute inset-0"
+    style={`background: radial-gradient(ellipse at center, ${accentColor}15 0%, transparent 60%);`}
+  />
+
+  <!-- Content -->
+  <div data-startup-content class="relative z-10 mx-auto max-w-2xl text-center">
+    <p data-slide-content class="text-sm font-medium uppercase tracking-widest text-text-muted">
+      {role} &middot; {date}
+    </p>
+
+    <h3
+      data-slide-content
+      class="mt-4 font-display text-4xl font-bold sm:text-5xl md:text-6xl"
+      style={`color: ${accentColor};`}
+    >
+      {name}
+    </h3>
+
+    <p data-slide-content class="mt-6 text-lg leading-relaxed text-text-secondary">
+      {description}
+    </p>
+
+    <ul data-slide-content class="mt-8 flex flex-col items-center gap-3">
+      {highlights.map((highlight) => (
+        <li class="flex items-center gap-3 text-text-primary">
+          <span class="h-2 w-2 rounded-full" style={`background-color: ${accentColor};`} />
+          <span class="text-base">{highlight}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div data-slide-content class="mt-8 flex flex-wrap justify-center gap-2">
+      {techStack.map((tech) => (
+        <span
+          class="rounded-full px-3 py-1 text-xs font-medium ring-1"
+          style={`color: ${accentColor}; background-color: ${accentColor}15; border-color: ${accentColor}30;`}
+        >
+          {tech}
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
