@@ -51,7 +51,7 @@ export const stats: readonly Stat[] = [
     suffix: 'M',
     prefix: '$',
     label: 'market cap reached',
-    sublabel: 'Modern Stoic — from idea to tokenized brand in under six months',
+    sublabel: 'Modern Stoic — from idea to automated trading platform in under six months',
     gradient: ['#ff6b2b', '#4a7fa5'],
   },
   {
