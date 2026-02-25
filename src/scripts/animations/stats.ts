@@ -1,4 +1,6 @@
 import { gsap, ScrollTrigger } from '../gsap-init'
+import { animateCounter } from '../effects/number-counter'
+import { triggerGlitch } from '../effects/glitch'
 
 export function initStatsAnimations(): void {
   const statsSection = document.querySelector('[data-stats]')
@@ -8,6 +10,7 @@ export function initStatsAnimations(): void {
 
   const totalSlides = statSlides.length
   let currentIndex = 0
+  const hasAnimated = new Set<number>()
 
   // Set initial state: first slide visible, rest hidden
   statSlides.forEach((slide, i) => {
@@ -21,13 +24,109 @@ export function initStatsAnimations(): void {
     }
   })
 
+  function animateSlideIn(slide: Element, index: number): void {
+    const el = slide as HTMLElement
+    const bg = el.querySelector('[data-stat-bg]') as HTMLElement | null
+    const value = el.querySelector('[data-stat-value]') as HTMLElement | null
+    const label = el.querySelector('[data-stat-label]')
+    const sublabel = el.querySelector('[data-stat-sublabel]')
+    const progress = el.querySelector('[data-stat-progress]') as HTMLElement | null
+
+    el.style.display = 'flex'
+
+    gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.4 })
+
+    if (bg) {
+      gsap.fromTo(bg, { opacity: 0 }, { opacity: 1, duration: 0.6 })
+    }
+
+    if (value) {
+      gsap.fromTo(value, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' })
+
+      // Counter animation (only first time)
+      if (!hasAnimated.has(index)) {
+        const countTo = Number(value.dataset.countTo ?? 0)
+        const prefix = value.dataset.prefix ?? ''
+        const suffix = value.dataset.suffix ?? ''
+
+        animateCounter(value, countTo, {
+          prefix,
+          suffix,
+          duration: 2,
+          onUpdate: () => {
+            if (progress) {
+              const fraction = parseFloat(progress.style.width) || 0
+              if (fraction < 100) {
+                progress.style.width = `${Math.min(fraction + 2, 100)}%`
+              }
+            }
+          },
+        })
+
+        // Glitch burst on value
+        triggerGlitch(value, 0.3)
+        hasAnimated.add(index)
+      }
+
+      // Fill progress bar
+      if (progress) {
+        gsap.to(progress, { width: '100%', duration: 2, ease: 'power2.out', delay: 0.2 })
+      }
+    }
+
+    if (label) {
+      gsap.fromTo(label, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, delay: 0.1 })
+    }
+    if (sublabel) {
+      gsap.fromTo(sublabel, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, delay: 0.15 })
+    }
+  }
+
+  function animateSlideOut(slide: Element): void {
+    const el = slide as HTMLElement
+    const bg = el.querySelector('[data-stat-bg]') as HTMLElement | null
+    const progressBar = el.querySelector('[data-stat-progress]') as HTMLElement | null
+
+    gsap.to(el, {
+      opacity: 0,
+      duration: 0.3,
+      onComplete: () => {
+        el.style.display = 'none'
+      },
+    })
+
+    if (bg) {
+      gsap.to(bg, { opacity: 0, duration: 0.3 })
+    }
+
+    if (progressBar) {
+      progressBar.style.width = '0'
+    }
+  }
+
+  // Animate first slide on entry
+  ScrollTrigger.create({
+    trigger: statsSection,
+    start: 'top 60%',
+    once: true,
+    onEnter: () => {
+      animateSlideIn(statSlides[0], 0)
+      hasAnimated.add(0)
+    },
+  })
+
   // Pin the section and cycle slides
   ScrollTrigger.create({
     trigger: statsSection,
     start: 'top top',
-    end: () => `+=${totalSlides * 100}vh`,
+    end: () => `+=${totalSlides * 150}vh`,
     pin: true,
     pinSpacing: true,
+    snap: {
+      snapTo: 1 / totalSlides,
+      duration: { min: 0.2, max: 0.6 },
+      ease: 'power1.inOut',
+    },
     onUpdate: (self) => {
       const progress = self.progress
       const newIndex = Math.min(
@@ -36,37 +135,11 @@ export function initStatsAnimations(): void {
       )
 
       if (newIndex !== currentIndex) {
-        // Hide current slide
-        const currentSlide = statSlides[currentIndex] as HTMLElement
-        const currentBg = currentSlide.querySelector('[data-stat-bg]') as HTMLElement
-        currentSlide.style.opacity = '0'
-        currentSlide.style.display = 'none'
-        if (currentBg) currentBg.style.opacity = '0'
+        // Smooth fade-out current slide
+        animateSlideOut(statSlides[currentIndex])
 
-        // Show new slide with animation
-        const newSlide = statSlides[newIndex] as HTMLElement
-        const newBg = newSlide.querySelector('[data-stat-bg]') as HTMLElement
-        const newValue = newSlide.querySelector('[data-stat-value]')
-        const newLabel = newSlide.querySelector('[data-stat-label]')
-        const newSublabel = newSlide.querySelector('[data-stat-sublabel]')
-
-        newSlide.style.display = 'flex'
-
-        gsap.fromTo(newSlide, { opacity: 0 }, { opacity: 1, duration: 0.4 })
-
-        if (newBg) {
-          gsap.fromTo(newBg, { opacity: 0 }, { opacity: 1, duration: 0.6 })
-        }
-        if (newValue) {
-          gsap.fromTo(newValue, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(1.5)' })
-        }
-        if (newLabel) {
-          gsap.fromTo(newLabel, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, delay: 0.1 })
-        }
-        if (newSublabel) {
-          gsap.fromTo(newSublabel, { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, delay: 0.15 })
-        }
-
+        // Show new slide
+        animateSlideIn(statSlides[newIndex], newIndex)
         currentIndex = newIndex
       }
     },

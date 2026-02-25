@@ -4,65 +4,47 @@ export interface Skill {
 }
 
 export type SkillCategory =
-  | 'languages'
-  | 'frontend'
-  | 'backend'
+  | 'agentic'
+  | 'commandhub'
   | 'infrastructure'
   | 'data'
-  | 'tools'
 
 export const skills: readonly Skill[] = [
-  // Languages
-  { name: 'Python', category: 'languages' },
-  { name: 'TypeScript', category: 'languages' },
-  { name: 'Java', category: 'languages' },
-  { name: 'JavaScript', category: 'languages' },
-  { name: 'SQL', category: 'languages' },
-  { name: 'Go', category: 'languages' },
+  // Agentic Stack
+  { name: 'Claude Code', category: 'agentic' },
+  { name: 'OpenClaw', category: 'agentic' },
+  { name: 'MCP', category: 'agentic' },
+  { name: 'Claude API', category: 'agentic' },
+  { name: 'Tool-Use Patterns', category: 'agentic' },
+  { name: 'Prompt Engineering', category: 'agentic' },
 
-  // Frontend
-  { name: 'React', category: 'frontend' },
-  { name: 'Next.js', category: 'frontend' },
-  { name: 'Astro', category: 'frontend' },
-  { name: 'Tailwind CSS', category: 'frontend' },
-  { name: 'HTML/CSS', category: 'frontend' },
-  { name: 'GSAP', category: 'frontend' },
-
-  // Backend
-  { name: 'Node.js', category: 'backend' },
-  { name: 'Express', category: 'backend' },
-  { name: 'gRPC', category: 'backend' },
-  { name: 'REST APIs', category: 'backend' },
-  { name: 'GraphQL', category: 'backend' },
+  // Command Hub
+  { name: 'Raspberry Pi', category: 'commandhub' },
+  { name: 'OpenClaw Gateway', category: 'commandhub' },
+  { name: 'Local Infrastructure', category: 'commandhub' },
 
   // Infrastructure
   { name: 'AWS', category: 'infrastructure' },
   { name: 'Kubernetes', category: 'infrastructure' },
-  { name: 'Terraform', category: 'infrastructure' },
   { name: 'Docker', category: 'infrastructure' },
+  { name: 'Terraform', category: 'infrastructure' },
   { name: 'Vercel', category: 'infrastructure' },
   { name: 'CI/CD', category: 'infrastructure' },
 
-  // Data
+  // Data & Streaming
   { name: 'Kafka', category: 'data' },
+  { name: 'Flink', category: 'data' },
   { name: 'Spark', category: 'data' },
-  { name: 'MongoDB', category: 'data' },
   { name: 'PostgreSQL', category: 'data' },
-  { name: 'Firebase', category: 'data' },
+  { name: 'MongoDB', category: 'data' },
+  { name: 'Neo4j', category: 'data' },
   { name: 'Redis', category: 'data' },
-
-  // Tools
-  { name: 'Git', category: 'tools' },
-  { name: 'Jira', category: 'tools' },
-  { name: 'Linear', category: 'tools' },
-  { name: 'Figma', category: 'tools' },
+  { name: 'Firebase', category: 'data' },
 ] as const
 
 export const categoryLabels: Record<SkillCategory, string> = {
-  languages: 'Languages',
-  frontend: 'Frontend',
-  backend: 'Backend',
+  agentic: 'Agentic Stack',
+  commandhub: 'Command Hub',
   infrastructure: 'Infrastructure',
-  data: 'Data & Databases',
-  tools: 'Tools',
+  data: 'Data & Streaming',
 } as const

@@ -22,13 +22,14 @@ const { name, role, date, description, highlights, techStack, animation, accentC
   <div
     data-startup-bg
     class="absolute inset-0"
-    style={`background: radial-gradient(ellipse at center, ${accentColor}15 0%, transparent 60%);`}
+    style={`background: radial-gradient(ellipse at center, ${accentColor}10 0%, transparent 60%);`}
   />
 
   <!-- Content -->
   <div data-startup-content class="relative z-10 mx-auto max-w-2xl text-center">
-    <p data-slide-content class="text-sm font-medium uppercase tracking-widest text-text-muted">
-      {role} &middot; {date}
+    <!-- Kicker -->
+    <p data-slide-content class="font-mono text-sm tracking-widest text-text-muted">
+      <span style={`color: ${accentColor};`}>[</span> {role} <span style={`color: ${accentColor};`}>]</span> &middot; {date}
     </p>
 
     <h3
@@ -43,10 +44,13 @@ const { name, role, date, description, highlights, techStack, animation, accentC
       {description}
     </p>
 
+    <!-- Horizontal rule -->
+    <div data-slide-content class="mx-auto mt-8 h-[1px] w-10" style={`background-color: ${accentColor};`} />
+
     <ul data-slide-content class="mt-8 flex flex-col items-center gap-3">
       {highlights.map((highlight) => (
         <li class="flex items-center gap-3 text-text-primary">
-          <span class="h-2 w-2 rounded-full" style={`background-color: ${accentColor};`} />
+          <span class="font-mono text-sm" style={`color: ${accentColor};`}>&rarr;</span>
           <span class="text-base">{highlight}</span>
         </li>
       ))}
@@ -55,8 +59,8 @@ const { name, role, date, description, highlights, techStack, animation, accentC
     <div data-slide-content class="mt-8 flex flex-wrap justify-center gap-2">
       {techStack.map((tech) => (
         <span
-          class="rounded-full px-3 py-1 text-xs font-medium ring-1"
-          style={`color: ${accentColor}; background-color: ${accentColor}15; border-color: ${accentColor}30;`}
+          class="font-mono rounded-sm px-3 py-1 text-xs font-medium ring-1"
+          style={`color: ${accentColor}; background-color: ${accentColor}10; border-color: ${accentColor}30;`}
         >
           {tech}
         </span>

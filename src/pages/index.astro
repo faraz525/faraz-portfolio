@@ -44,7 +44,7 @@ import { startups } from '../data/startups'
   </main>
 
   <script>
-    import { initSmoothScroll } from '../scripts/lenis-init'
+    import { initSmoothScroll, getScrollVelocity } from '../scripts/lenis-init'
     import { initHeroAnimations } from '../scripts/animations/hero'
     import { initAboutAnimations } from '../scripts/animations/about'
     import { initStatsAnimations } from '../scripts/animations/stats'
@@ -52,9 +52,14 @@ import { startups } from '../data/startups'
     import { initStartupsIntroAnimation, initStartupSlideAnimations } from '../scripts/animations/startups'
     import { initSkillsAnimations } from '../scripts/animations/skills'
     import { initContactAnimations } from '../scripts/animations/contact'
+    import { ParticleSystem } from '../scripts/effects/particle-system'
+    import { initCursorGlow } from '../scripts/effects/cursor-effects'
+    import { initScrollHue } from '../scripts/effects/scroll-hue'
+    import { initGradientBlobs } from '../scripts/effects/gradient-blobs'
+    import { gsap } from '../scripts/gsap-init'
 
-    // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobile = window.innerWidth < 768
 
     if (!prefersReducedMotion) {
       initSmoothScroll()
@@ -66,6 +71,25 @@ import { startups } from '../data/startups'
       initStartupSlideAnimations()
       initSkillsAnimations()
       initContactAnimations()
+      initScrollHue()
+      initGradientBlobs()
+
+      // Desktop-only effects
+      if (!isMobile) {
+        initCursorGlow()
+
+        try {
+          const particles = new ParticleSystem('particle-canvas', 50)
+          particles.start()
+
+          // Feed scroll velocity to particle system
+          gsap.ticker.add(() => {
+            particles.setScrollVelocity(getScrollVelocity())
+          })
+        } catch {
+          // Canvas not available, skip particles
+        }
+      }
     }
   </script>
 </BaseLayout>

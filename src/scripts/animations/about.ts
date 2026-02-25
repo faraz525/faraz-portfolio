@@ -1,4 +1,5 @@
 import { gsap, ScrollTrigger } from '../gsap-init'
+import { blurReveal } from '../effects/blur-reveal'
 
 export function initAboutAnimations(): void {
   const aboutSection = document.querySelector('[data-about]')
@@ -17,6 +18,7 @@ export function initAboutAnimations(): void {
     },
   })
 
+  // Image clip-path wipe
   if (aboutImage) {
     tl.fromTo(
       aboutImage,
@@ -25,25 +27,26 @@ export function initAboutAnimations(): void {
     )
   }
 
+  // Text blur reveal
   if (aboutText.length > 0) {
-    tl.from(
-      aboutText,
-      {
-        opacity: 0,
-        y: 40,
-        stagger: 0.2,
+    tl.add(() => {
+      blurReveal(aboutText, {
+        blur: 12,
+        stagger: 0.15,
         duration: 0.8,
-      },
-      '-=0.8'
-    )
+        y: 30,
+      })
+    }, '-=0.8')
   }
 
+  // Badge: scale + blur reveal
   if (aboutBadge) {
     tl.from(
       aboutBadge,
       {
         opacity: 0,
         scale: 0.8,
+        filter: 'blur(8px)',
         duration: 0.6,
       },
       '-=0.3'

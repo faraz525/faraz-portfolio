@@ -7,16 +7,18 @@ export function initExperienceAnimations(): void {
 
   if (!section || !track || slides.length === 0) return
 
-  // Desktop: horizontal scroll
   const mm = ScrollTrigger.matchMedia({})
 
+  // Desktop: horizontal scroll
   mm.add('(min-width: 768px)', () => {
     const totalWidth = (track as HTMLElement).scrollWidth - window.innerWidth
 
-    gsap.to(track, {
+    // Store the tween so we can reference it as containerAnimation
+    const scrollTween = gsap.to(track, {
       x: -totalWidth,
       ease: 'none',
       scrollTrigger: {
+        id: 'expScroll',
         trigger: section,
         start: 'top top',
         end: () => `+=${totalWidth}`,
@@ -38,7 +40,7 @@ export function initExperienceAnimations(): void {
         duration: 0.6,
         scrollTrigger: {
           trigger: slide,
-          containerAnimation: gsap.getById?.('expScroll') || undefined,
+          containerAnimation: scrollTween,
           start: 'left 80%',
           end: 'left 20%',
           toggleActions: 'play none none reverse',
@@ -52,7 +54,8 @@ export function initExperienceAnimations(): void {
         duration: 0.4,
         scrollTrigger: {
           trigger: slide,
-          start: 'top 80%',
+          containerAnimation: scrollTween,
+          start: 'left 80%',
           toggleActions: 'play none none none',
         },
       })

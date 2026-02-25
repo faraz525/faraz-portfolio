@@ -11,6 +11,8 @@ import StatCounter from '../ui/StatCounter.astro'
   <div class="relative h-screen w-full px-6">
     {stats.map((stat, i) => (
       <StatCounter
+        index={i}
+        total={stats.length}
         prefix={stat.prefix}
         value={stat.numericValue}
         suffix={stat.suffix}

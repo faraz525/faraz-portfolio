@@ -2,6 +2,7 @@ export interface Experience {
   readonly company: string
   readonly role: string
   readonly date: string
+  readonly location: string
   readonly bullets: readonly string[]
   readonly techStack: readonly string[]
   readonly logo: string
@@ -9,62 +10,66 @@ export interface Experience {
 
 export const experiences: readonly Experience[] = [
   {
-    company: 'Tesla',
+    company: 'Tesla — Firebolt',
     role: 'Software Engineer',
-    date: 'Jan 2024 – Present',
+    date: 'Jun 2025 – Present',
+    location: 'Seattle, WA',
     bullets: [
-      'Building robust back-end systems and data pipelines processing millions of events per day for Tesla\'s high-performance platform.',
-      'Developed an AI agent that auto-resolves 75% of incoming infrastructure alerts, cutting on-call burden across the team.',
-      'Applied principles of distributed computing to optimize data delivery in near real-time at massive scale.',
+      'I architect Go pipelines that process millions of events per day, powering the internal platform that keeps Tesla\'s customer operations running in real time.',
+      'I built an agentic customer-experience workflow that auto-resolves roughly 75% of incoming cases, cutting response times from hours to seconds.',
+      'I designed an AI evaluation tool in React and Go that lets the team measure model accuracy against live production data.',
+      'I own a templating service with RBAC that standardizes communications across business units while keeping sensitive data locked down.',
     ],
-    techStack: ['Python', 'Kafka', 'Kubernetes', 'Terraform', 'gRPC'],
+    techStack: ['Go', 'Kafka', 'Flink', 'Postgres', 'MongoDB', 'Redis', 'Kubernetes'],
     logo: 'tesla_logo_PNG19.png',
   },
   {
-    company: 'Tesla',
+    company: 'Tesla — Customer 360 Platform',
     role: 'Software Engineering Intern',
-    date: 'Sep 2023 – Dec 2023',
+    date: 'Sep – Dec 2024',
+    location: 'Fremont, CA',
     bullets: [
-      'Designed and developed robust back-end systems and data pipelines for Tesla\'s high-performance platform.',
-      'Applied principles of distributed computing to optimize data delivery in near real-time.',
+      'I built ETL pipelines that unified fragmented customer data into a single 360-degree view used by service teams across the company.',
+      'I created a data-validation framework that caught schema drift before it hit production, saving the team dozens of incident hours.',
+      'I ran stakeholder interviews to map data needs, then translated those findings into a pipeline architecture the team still uses.',
     ],
-    techStack: ['Python', 'Kafka', 'Spark', 'AWS'],
+    techStack: ['Neo4j', 'MongoDB', 'Kafka', 'GraphQL', 'Docker'],
     logo: 'tesla_logo_PNG19.png',
-  },
-  {
-    company: 'Capital One',
-    role: 'Software Data Engineer Intern',
-    date: 'Jun 2023 – Sep 2023',
-    bullets: [
-      'Built an automated data validation process using CloudWatch and Lambda, saving over 3,600 developer hours annually.',
-      'Developed a high-performance Python library for parsing, optimizing indexing and comparison with a Trie data structure.',
-      'Contributed to a customer-facing UI tool using React, empowering users to manage their data preferences.',
-    ],
-    techStack: ['Python', 'AWS Lambda', 'CloudWatch', 'React', 'TypeScript'],
-    logo: 'c1.png',
   },
   {
     company: 'Amazon AWS',
     role: 'Software Development Engineer Intern',
-    date: 'Sep 2022 – Dec 2022',
+    date: 'Sep – Dec 2023',
+    location: 'Seattle, WA',
     bullets: [
-      'Spearheaded proactive cluster health monitoring solutions, saving 400+ developer hours on debugging.',
-      'Utilized Java and Spark to handle large datasets, improving the robustness and reliability of AWS services.',
-      'Created a tool for on-demand cluster health visualization, improving developer experience across the org.',
+      'I built a proactive cluster-health monitoring system in Java and Spark that surfaced failures before engineers noticed them.',
+      'I created a visualization tool that replaced hours of manual log-diving, saving the org 400+ developer hours per quarter.',
     ],
     techStack: ['Java', 'Spark', 'AWS', 'CloudWatch', 'TypeScript'],
     logo: 'aws.png',
   },
   {
-    company: 'Cledge',
-    role: 'Co-Founder & CTO',
-    date: 'Dec 2020 – Dec 2023',
+    company: 'Capital One',
+    role: 'Software Engineer Intern',
+    date: 'Jun – Sep 2023',
+    location: 'New York, NY',
     bullets: [
-      'Launched Cledge to tackle inequity in college consulting and revolutionize college advising.',
-      'Won #1 at Dempsey Startup Competition; Microsoft for Startups, IBM Startups, and MassChallenge accelerator.',
-      'Led a team of 12 developers building web solutions with TypeScript, React, Next.js, and MongoDB.',
+      'I automated an encrypted ETL workflow that eliminated a manual data-handoff process and freed the team to focus on analysis.',
+      'I shipped features in AngularJS and Spring Boot for an internal ops tool used by hundreds of associates daily.',
     ],
-    techStack: ['TypeScript', 'React', 'Next.js', 'MongoDB', 'Firebase'],
-    logo: 'cledge.png',
+    techStack: ['AngularJS', 'Spring Boot', 'AWS', 'Java', 'SQL'],
+    logo: 'c1.png',
+  },
+  {
+    company: 'Capital One',
+    role: 'Software Data Engineer Intern',
+    date: 'Jun – Sep 2022',
+    location: 'Plano, TX',
+    bullets: [
+      'I built a Lambda + CloudWatch validation layer that caught data anomalies in near real-time, saving over 3,600 developer hours annually.',
+      'I wrote a Python parsing library with a Trie-based index that ran 2x faster than the existing solution and became the team standard.',
+    ],
+    techStack: ['Python', 'AWS Lambda', 'CloudWatch', 'React', 'TypeScript'],
+    logo: 'c12.jpeg',
   },
 ] as const

@@ -7,7 +7,7 @@ import headshot from '../../assets/images/headshot2.jpeg'
   <div class="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
     <!-- Image -->
     <div class="relative" data-about-image>
-      <div class="relative overflow-hidden rounded-2xl">
+      <div class="relative overflow-hidden rounded-sm clip-cut-corner">
         <Image
           src={headshot}
           alt="Faraz Qureshi"
@@ -15,7 +15,10 @@ import headshot from '../../assets/images/headshot2.jpeg'
           widths={[400, 600, 800]}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
-        <div class="absolute inset-0 rounded-2xl ring-1 ring-white/10" />
+        <div class="absolute inset-0 rounded-sm ring-2 ring-accent-orange/30" />
+        <!-- Corner bracket overlay on image -->
+        <div class="absolute top-3 left-3 h-4 w-4 border-t border-l border-accent-orange/40" />
+        <div class="absolute bottom-3 right-3 h-4 w-4 border-b border-r border-accent-orange/40" />
       </div>
     </div>
 
@@ -25,30 +28,37 @@ import headshot from '../../assets/images/headshot2.jpeg'
         data-about-text
         class="font-display text-3xl font-bold sm:text-4xl"
       >
-        About Me
+        The Short Version
       </h2>
 
       <p data-about-text class="text-lg leading-relaxed text-text-secondary">
-        Software Engineer at Tesla, building high-performance data systems that process millions of events daily.
-        Previously shipped at Amazon AWS and Capital One, where I built monitoring tools and data pipelines
-        that saved thousands of developer hours.
+        I believe the best engineers don't just write code — they solve the problems no one else wants to touch. I chase the hardest thing on the board, ship it, then find the next one.
       </p>
 
       <p data-about-text class="text-lg leading-relaxed text-text-secondary">
-        Outside of work, I build things. From Modern Stoic — a digital wellness brand — to Cledge,
-        a startup that won #1 at the Dempsey Competition and joined MassChallenge, I'm driven by the intersection
-        of engineering and entrepreneurship.
+        Right now I'm building distributed systems at Tesla, where my pipelines process millions of events per day. Before that I shipped at Amazon AWS and Capital One, built two startups, and graduated from the University of Washington with degrees in Computer Science and Business.
+      </p>
+
+      <p data-about-text class="text-lg leading-relaxed text-text-secondary">
+        What sets me apart: I've been a founder three times. I know what it's like to raise money, hire a team, and ship under pressure — and I bring that urgency to every engineering role.
       </p>
 
       <div
         data-about-badge
-        class="flex items-center gap-3 rounded-xl bg-bg-elevated px-5 py-3 ring-1 ring-white/5"
+        class="flex items-center gap-3 rounded-sm bg-bg-elevated px-5 py-3 border-l-2 border-accent-orange ring-1 ring-border"
       >
-        <div class="h-3 w-3 rounded-full bg-accent-violet" />
+        <div class="h-2.5 w-2.5 bg-accent-orange" />
         <span class="text-sm font-medium text-text-secondary">
-          B.S. Computer Science — University of Washington, 2024
+          Allen School of CSE + Foster School of Business — UW, 2024
         </span>
       </div>
     </div>
+  </div>
+
+  <!-- Transition line -->
+  <div class="absolute bottom-12 left-0 right-0 text-center">
+    <p class="font-mono text-xs tracking-widest text-text-muted uppercase">
+      Here is what that looks like in numbers.
+    </p>
   </div>
 </section>

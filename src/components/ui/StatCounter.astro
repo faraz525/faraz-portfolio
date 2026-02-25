@@ -1,5 +1,7 @@
 ---
 interface Props {
+  index: number
+  total: number
   prefix?: string
   value: number
   suffix?: string
@@ -9,7 +11,8 @@ interface Props {
   hidden?: boolean
 }
 
-const { prefix = '', value, suffix = '', label, sublabel, gradient, hidden = false } = Astro.props
+const { index, total, prefix = '', value, suffix = '', label, sublabel, gradient, hidden = false } = Astro.props
+const indicator = `METRIC_${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`
 ---
 
 <div
@@ -25,8 +28,14 @@ const { prefix = '', value, suffix = '', label, sublabel, gradient, hidden = fal
     data-stat-bg
     style={`background: radial-gradient(ellipse at center, ${gradient[0]}20 0%, transparent 70%);`}
   />
+
+  <!-- Stat indicator -->
+  <p class="relative mb-6 font-mono text-xs tracking-[0.3em] text-text-secondary uppercase">
+    {indicator}
+  </p>
+
   <p
-    class="relative font-display text-7xl font-bold tracking-tight sm:text-8xl md:text-9xl"
+    class="relative font-display text-7xl font-bold tracking-tight sm:text-8xl md:text-9xl stat-glow"
     data-stat-value
     data-count-to={value}
     data-prefix={prefix}
@@ -37,7 +46,12 @@ const { prefix = '', value, suffix = '', label, sublabel, gradient, hidden = fal
   <p class="relative mt-4 text-xl text-text-secondary sm:text-2xl md:text-3xl" data-stat-label>
     {label}
   </p>
-  <p class="relative mt-2 text-sm text-text-muted sm:text-base" data-stat-sublabel>
+  <p class="relative mt-2 text-sm text-text-secondary sm:text-base max-w-md" data-stat-sublabel>
     {sublabel}
   </p>
+
+  <!-- Progress bar -->
+  <div class="relative mt-6 h-[2px] w-16 overflow-hidden rounded-full bg-border">
+    <div class="h-full w-0 rounded-full bg-accent-orange transition-all duration-700" data-stat-progress />
+  </div>
 </div>

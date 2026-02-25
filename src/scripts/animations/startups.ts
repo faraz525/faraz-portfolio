@@ -1,4 +1,5 @@
 import { gsap, ScrollTrigger, SplitText } from '../gsap-init'
+import { triggerGlitch } from '../effects/glitch'
 
 export function initStartupsIntroAnimation(): void {
   const intro = document.querySelector('[data-startups-intro]')
@@ -8,6 +9,37 @@ export function initStartupsIntroAnimation(): void {
   if (!introText) return
 
   const split = SplitText.create(introText, { type: 'words' })
+
+  // Gradient-text uses -webkit-text-fill-color: transparent + background-clip: text
+  // on the parent <span>. When SplitText wraps words in child divs, opacity on those
+  // divs makes the clipped gradient invisible. Fix: move the gradient styling onto
+  // each word element directly so each word is self-contained and opacity works.
+  // Cache parent styles BEFORE clearing them (avoid reading after mutation).
+  const gradientParents = new Map<Element, string>()
+  split.words.forEach((word: Element) => {
+    const parent = word.parentElement
+    if (parent?.classList.contains('gradient-text') && !gradientParents.has(parent)) {
+      gradientParents.set(parent, window.getComputedStyle(parent).background)
+    }
+  })
+
+  split.words.forEach((word: Element) => {
+    const el = word as HTMLElement
+    const parent = el.parentElement
+    if (parent && gradientParents.has(parent)) {
+      el.style.background = gradientParents.get(parent)!
+      el.style.backgroundClip = 'text'
+      el.style.webkitBackgroundClip = 'text'
+      el.style.webkitTextFillColor = 'transparent'
+    }
+  })
+
+  // Clear gradient from parents after all words have been styled
+  gradientParents.forEach((_, parent) => {
+    const el = parent as HTMLElement
+    el.style.background = 'none'
+    el.style.webkitTextFillColor = 'inherit'
+  })
 
   gsap.from(split.words, {
     opacity: 0.1,
@@ -46,6 +78,13 @@ export function initStartupSlideAnimations(): void {
         start: 'top 80%',
         end: 'top 20%',
         scrub: 1,
+        onEnter: () => {
+          // Glitch on heading entry
+          const heading = content.querySelector('h3') as HTMLElement | null
+          if (heading) {
+            triggerGlitch(heading, 0.4)
+          }
+        },
       },
     })
 

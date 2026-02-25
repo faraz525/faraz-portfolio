@@ -4,15 +4,19 @@ import { skills, categoryLabels, type SkillCategory } from '../../data/skills'
 const categories = [...new Set(skills.map((s) => s.category))] as SkillCategory[]
 ---
 
-<section id="skills" data-skills class="section-full flex flex-col items-center justify-center px-6 py-24">
-  <h2 class="font-display text-3xl font-bold sm:text-4xl md:text-5xl mb-16">
-    Tech <span class="gradient-text">Stack</span>
+<section id="skills" data-skills class="relative flex flex-col items-center justify-center px-6 py-24">
+  <h2 class="font-display text-3xl font-bold sm:text-4xl md:text-5xl mb-4">
+    What I <span class="gradient-text">Build With</span>
   </h2>
 
-  <div class="mx-auto grid w-full max-w-4xl gap-10 md:grid-cols-2 lg:grid-cols-3">
+  <p class="mb-16 font-mono text-xs tracking-widest text-text-muted max-w-md text-center">
+    I pick the right tool for the problem, not the other way around.
+  </p>
+
+  <div class="mx-auto grid w-full max-w-4xl gap-10 md:grid-cols-2 lg:grid-cols-2">
     {categories.map((category) => (
       <div>
-        <h3 class="mb-4 text-xs font-semibold uppercase tracking-widest text-text-muted">
+        <h3 class="mb-4 text-xs font-semibold uppercase tracking-widest text-accent-orange/70">
           {categoryLabels[category]}
         </h3>
         <div class="flex flex-wrap gap-2">
@@ -21,7 +25,7 @@ const categories = [...new Set(skills.map((s) => s.category))] as SkillCategory[
             .map((skill) => (
               <span
                 data-skill-pill
-                class="rounded-full bg-bg-elevated px-4 py-2 text-sm font-medium text-text-primary ring-1 ring-white/10 transition-colors hover:ring-accent-violet/40"
+                class="font-mono rounded-sm bg-bg-inset px-4 py-2 text-sm font-medium text-text-primary ring-1 ring-border transition-all duration-300 hover:ring-accent-orange-border hover:shadow-[0_0_12px_rgba(255,107,43,0.1)]"
               >
                 {skill.name}
               </span>

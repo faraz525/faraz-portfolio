@@ -21,7 +21,7 @@ function getImage(filename: string): ImageMetadata {
   <!-- Section header -->
   <div class="flex items-center justify-center pt-24 pb-8 px-6">
     <h2 class="font-display text-3xl font-bold sm:text-4xl md:text-5xl">
-      Where I've <span class="gradient-text">Worked</span>
+      The Proving <span class="gradient-text">Grounds</span>
     </h2>
   </div>
 
@@ -37,6 +37,7 @@ function getImage(filename: string): ImageMetadata {
           company={exp.company}
           role={exp.role}
           date={exp.date}
+          location={exp.location}
           bullets={exp.bullets}
           techStack={exp.techStack}
           logoSrc={getImage(exp.logo)}
@@ -48,9 +49,10 @@ function getImage(filename: string): ImageMetadata {
   <!-- Mobile: vertical stack -->
   <div class="flex flex-col gap-8 px-6 pb-24 md:hidden">
     {experiences.map((exp) => (
-      <div data-experience-slide class="rounded-2xl bg-bg-elevated p-6 ring-1 ring-white/5">
+      <div data-experience-slide class="rounded bg-bg-elevated p-6 ring-1 ring-border clip-cut-corner relative">
+        <div class="absolute top-0 left-0 right-0 h-[2px] bg-accent-orange" />
         <div class="flex items-center gap-3">
-          <div class="h-10 w-10 overflow-hidden rounded-lg bg-white/5 p-1.5 flex items-center justify-center">
+          <div class="h-10 w-10 overflow-hidden rounded-sm bg-bg-inset p-1.5 flex items-center justify-center">
             <img
               src={getImage(exp.logo).src}
               alt={`${exp.company} logo`}
@@ -65,18 +67,18 @@ function getImage(filename: string): ImageMetadata {
             <p class="text-xs text-text-secondary">{exp.role}</p>
           </div>
         </div>
-        <p class="mt-1.5 text-xs text-text-muted">{exp.date}</p>
+        <p class="mt-1.5 font-mono text-xs text-text-muted">{exp.date} &middot; {exp.location}</p>
         <ul class="mt-4 space-y-2">
           {exp.bullets.map((bullet) => (
             <li class="flex gap-2 text-sm leading-relaxed text-text-secondary">
-              <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent-violet" />
+              <span class="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent-orange" />
               <span>{bullet}</span>
             </li>
           ))}
         </ul>
         <div class="mt-4 flex flex-wrap gap-1.5">
           {exp.techStack.map((tech) => (
-            <span class="rounded-full bg-accent-violet/10 px-2.5 py-0.5 text-xs font-medium text-accent-purple">
+            <span class="font-mono rounded-sm bg-accent-orange-subtle px-2.5 py-0.5 text-xs font-medium text-accent-orange ring-1 ring-accent-orange-border">
               {tech}
             </span>
           ))}

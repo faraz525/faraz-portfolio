@@ -1,38 +1,54 @@
 ---
-import GradientBackground from '../ui/GradientBackground.astro'
 import SocialLinks from '../ui/SocialLinks.astro'
 ---
 
-<section id="hero" data-hero class="section-full relative flex flex-col items-center justify-center overflow-hidden px-6">
-  <GradientBackground />
+<section id="hero" data-hero class="section-full corner-brackets relative flex flex-col items-center justify-center overflow-hidden px-6">
+  <!-- Directed light + grid parallax layers -->
+  <div data-gradient-bg class="pointer-events-none absolute inset-0 overflow-hidden">
+    <div class="absolute -left-1/4 -top-1/4 h-[600px] w-[600px] rounded-full bg-accent-orange/10 blur-[120px]" data-gradient-blob />
+    <div class="absolute -right-1/4 top-1/4 h-[500px] w-[500px] rounded-full bg-accent-steel/8 blur-[100px]" data-gradient-blob />
+    <div class="absolute -bottom-1/4 left-1/3 h-[400px] w-[400px] rounded-full bg-accent-orange-dim/6 blur-[100px]" data-gradient-blob />
+  </div>
+
+  <!-- Grid overlay layers for parallax -->
+  <div data-parallax class="pointer-events-none absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(var(--color-accent-orange-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-accent-orange-border) 1px, transparent 1px); background-size: 60px 60px;" />
+  <div data-parallax class="pointer-events-none absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(var(--color-accent-steel-border) 1px, transparent 1px), linear-gradient(90deg, var(--color-accent-steel-border) 1px, transparent 1px); background-size: 120px 120px;" />
 
   <div class="relative z-10 flex flex-col items-center text-center">
+    <!-- Kicker -->
+    <p class="mb-6 font-mono text-xs tracking-[0.3em] text-text-muted">
+      [ ENGINEER &middot; FOUNDER &middot; BUILDER ]
+    </p>
+
     <h1
       data-hero-title
       class="font-display text-5xl font-bold leading-tight tracking-tight sm:text-7xl md:text-8xl lg:text-9xl"
     >
-      FARAZ QURESHI
+      <span class="gradient-text">FARAZ QURESHI</span>
     </h1>
 
     <p
       data-hero-subtitle
       class="mt-6 text-lg text-text-secondary sm:text-xl md:text-2xl"
     >
-      Software Engineer. Founder. Builder.
+      Distributed systems at Tesla. $34M startup at 23. Still shipping.
     </p>
 
     <SocialLinks class="mt-8" size="md" />
 
-    <div class="mt-16 animate-bounce">
-      <svg
-        class="h-6 w-6 text-text-muted"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        viewBox="0 0 24 24"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-      </svg>
+    <div class="mt-16 flex flex-col items-center gap-2">
+      <span class="font-mono text-[10px] tracking-widest text-text-muted uppercase">The story so far</span>
+      <div class="animate-bounce">
+        <svg
+          class="h-6 w-6 text-text-muted"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
     </div>
   </div>
 </section>

@@ -12,19 +12,25 @@ const sections = [
 
 <nav
   data-nav
-  class="fixed right-4 top-1/2 z-50 -translate-y-1/2 hidden md:flex flex-col gap-3"
+  class="fixed right-4 top-1/2 z-50 -translate-y-1/2 hidden md:flex flex-col items-center gap-0"
 >
-  {sections.map((section) => (
+  {sections.map((section, i) => (
     <a
       href={`#${section.id}`}
       data-nav-dot={section.id}
-      class="group relative flex items-center justify-end"
+      class="group relative flex items-center justify-end py-2"
       aria-label={section.label}
     >
-      <span class="mr-3 text-xs font-medium text-text-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <span class="mr-3 font-mono text-[10px] font-medium text-accent-orange/70 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         {section.label}
       </span>
-      <span class="block h-2.5 w-2.5 rounded-full border border-text-muted bg-transparent transition-all duration-300 group-hover:border-accent-violet group-hover:bg-accent-violet" />
+      <span class="relative block">
+        {/* Connecting line (not on last item) */}
+        {i < sections.length - 1 && (
+          <span class="absolute top-full left-1/2 -translate-x-1/2 h-2 w-[1px] bg-border-dim" />
+        )}
+        <span class="block h-2 w-2 rounded-none border border-text-muted bg-transparent transition-all duration-300 group-hover:border-accent-orange group-hover:bg-accent-orange" />
+      </span>
     </a>
   ))}
 </nav>
@@ -40,12 +46,12 @@ const sections = [
           if (entry.isIntersecting) {
             const id = entry.target.id
             dots.forEach((dot) => {
-              const circle = dot.querySelector('span:last-child')
+              const circle = dot.querySelector('span:last-child span:last-child')
               if (!circle) return
               if (dot.getAttribute('data-nav-dot') === id) {
-                circle.classList.add('bg-accent-violet', 'border-accent-violet', 'scale-125')
+                circle.classList.add('bg-accent-orange', 'border-accent-orange', 'scale-125')
               } else {
-                circle.classList.remove('bg-accent-violet', 'border-accent-violet', 'scale-125')
+                circle.classList.remove('bg-accent-orange', 'border-accent-orange', 'scale-125')
               }
             })
           }

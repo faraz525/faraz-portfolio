@@ -1,15 +1,18 @@
 import { gsap, ScrollTrigger } from '../gsap-init'
+import { scrambleOnHover } from '../effects/text-scramble'
 
 export function initSkillsAnimations(): void {
   const section = document.querySelector('[data-skills]')
-  const pills = document.querySelectorAll('[data-skill-pill]')
+  const pills = document.querySelectorAll<HTMLElement>('[data-skill-pill]')
 
   if (!section || pills.length === 0) return
 
   const mm = ScrollTrigger.matchMedia({})
 
-  // Desktop: scatter in from random positions
+  // Desktop: scatter in from random positions + scramble on hover
   mm.add('(min-width: 768px)', () => {
+    const cleanups: (() => void)[] = []
+
     pills.forEach((pill) => {
       const randomX = (Math.random() - 0.5) * 600
       const randomY = (Math.random() - 0.5) * 400
@@ -30,7 +33,14 @@ export function initSkillsAnimations(): void {
         },
         delay: Math.random() * 0.5,
       })
+
+      // Scramble text on hover
+      cleanups.push(scrambleOnHover(pill))
     })
+
+    return () => {
+      cleanups.forEach((fn) => fn())
+    }
   })
 
   // Mobile: simple stagger fade-in
