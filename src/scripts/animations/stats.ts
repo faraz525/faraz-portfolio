@@ -10,6 +10,9 @@ export function initStatsAnimations(): void {
 
   const totalSlides = statSlides.length
   let currentIndex = 0
+  let isTransitioning = false
+  let isExiting = false
+  let isPinned = false
   const hasAnimated = new Set<number>()
 
   // Set initial state: first slide visible, rest hidden
@@ -89,14 +92,14 @@ export function initStatsAnimations(): void {
 
     gsap.to(el, {
       opacity: 0,
-      duration: 0.3,
+      duration: 0.2,
       onComplete: () => {
         el.style.display = 'none'
       },
     })
 
     if (bg) {
-      gsap.to(bg, { opacity: 0, duration: 0.3 })
+      gsap.to(bg, { opacity: 0, duration: 0.2 })
     }
 
     if (progressBar) {
@@ -115,33 +118,95 @@ export function initStatsAnimations(): void {
     },
   })
 
-  // Pin the section and cycle slides
+  // Pin the section — wheel events control slide transitions, not scroll progress.
+  // The pin distance just keeps the section on screen; we intercept wheel events
+  // so the scroll position barely moves while the user is cycling through slides.
   ScrollTrigger.create({
     trigger: statsSection,
     start: 'top top',
-    end: () => `+=${totalSlides * 150}vh`,
+    end: () => `+=${totalSlides * 100}vh`,
     pin: true,
     pinSpacing: true,
-    snap: {
-      snapTo: 1 / totalSlides,
-      duration: { min: 0.2, max: 0.6 },
-      ease: 'power1.inOut',
-    },
-    onUpdate: (self) => {
-      const progress = self.progress
-      const newIndex = Math.min(
-        Math.floor(progress * totalSlides),
-        totalSlides - 1
-      )
-
-      if (newIndex !== currentIndex) {
-        // Smooth fade-out current slide
-        animateSlideOut(statSlides[currentIndex])
-
-        // Show new slide
-        animateSlideIn(statSlides[newIndex], newIndex)
-        currentIndex = newIndex
+    onToggle: (self) => {
+      isPinned = self.isActive
+      if (self.isActive) {
+        isExiting = false
       }
     },
   })
+
+  // Wheel handler — one slide per gesture with cooldown.
+  // Uses capture phase to intercept before Lenis processes the event.
+  function handleWheel(e: WheelEvent): void {
+    if (!isPinned || isTransitioning || isExiting) return
+
+    const direction = e.deltaY > 0 ? 1 : -1
+    const nextIndex = currentIndex + direction
+
+    // At boundaries, stop intercepting so Lenis can scroll past the section
+    if (nextIndex < 0 || nextIndex >= totalSlides) {
+      isExiting = true
+      return
+    }
+
+    // Prevent Lenis from adding momentum
+    e.preventDefault()
+    e.stopImmediatePropagation()
+
+    isTransitioning = true
+    animateSlideOut(statSlides[currentIndex])
+
+    gsap.delayedCall(0.25, () => {
+      currentIndex = nextIndex
+      animateSlideIn(statSlides[currentIndex], currentIndex)
+
+      gsap.delayedCall(0.7, () => {
+        isTransitioning = false
+      })
+    })
+  }
+
+  document.addEventListener('wheel', handleWheel, { capture: true, passive: false })
+
+  // Touch support — one slide per swipe
+  let touchStartY = 0
+
+  function handleTouchStart(e: TouchEvent): void {
+    if (!isPinned || isExiting) return
+    touchStartY = e.touches[0].clientY
+  }
+
+  function handleTouchMove(e: TouchEvent): void {
+    if (!isPinned || isTransitioning || isExiting) return
+
+    const deltaY = touchStartY - e.touches[0].clientY
+    if (Math.abs(deltaY) < 40) return
+
+    const direction = deltaY > 0 ? 1 : -1
+    const nextIndex = currentIndex + direction
+
+    if (nextIndex < 0 || nextIndex >= totalSlides) {
+      isExiting = true
+      return
+    }
+
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    touchStartY = e.touches[0].clientY
+
+    isTransitioning = true
+    animateSlideOut(statSlides[currentIndex])
+
+    gsap.delayedCall(0.25, () => {
+      currentIndex = nextIndex
+      animateSlideIn(statSlides[currentIndex], currentIndex)
+
+      gsap.delayedCall(0.7, () => {
+        isTransitioning = false
+      })
+    })
+  }
+
+  document.addEventListener('touchstart', handleTouchStart, { capture: true, passive: true })
+  document.addEventListener('touchmove', handleTouchMove, { capture: true, passive: false })
 }
